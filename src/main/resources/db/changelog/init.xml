@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1648384217338-1" author="YMS21 (generated)">
+        <createTable tableName="appuser">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_appuser"/>
+            </column>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="amount" type="DECIMAL"/>
+            <column name="role" type="VARCHAR(255)"/>
+            <column name="telegram_transport_type" type="VARCHAR(255)"/>
+            <column name="telegram_transport_name" type="VARCHAR(255)"/>
+            <column name="telegram_action" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1648384217338-2" author="YMS21 (generated)">
+        <createTable tableName="parking">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_parking"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="longitude" type="VARCHAR(255)"/>
+            <column name="latitude" type="VARCHAR(255)"/>
+            <column name="radius" type="DOUBLE"/>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="delete_status" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1648384217338-3" author="YMS21 (generated)">
+        <createTable tableName="rent">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_rent"/>
+            </column>
+            <column name="start_rent_datetime" type="DATETIME"/>
+            <column name="end_rent_datetime" type="DATETIME"/>
+            <column name="amount" type="DECIMAL"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="start_parking_id" type="BIGINT"/>
+            <column name="end_parking_id" type="BIGINT"/>
+            <column name="appuser_id" type="BIGINT"/>
+            <column name="transport_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1648384217338-4" author="YMS21 (generated)">
+        <createTable tableName="transport">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_transport"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="charge" type="INT"/>
+            <column name="max_speed" type="INT"/>
+            <column name="condition" type="VARCHAR(255)"/>
+            <column name="latitude" type="VARCHAR(255)"/>
+            <column name="longitude" type="VARCHAR(255)"/>
+            <column name="type" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="parking_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1648384217338-5" author="YMS21 (generated)">
+        <addForeignKeyConstraint baseColumnNames="appuser_id" baseTableName="rent" constraintName="FK_RENT_ON_APPUSER"
+                                 referencedColumnNames="id" referencedTableName="appuser"/>
+    </changeSet>
+    <changeSet id="1648384217338-6" author="YMS21 (generated)">
+        <addForeignKeyConstraint baseColumnNames="end_parking_id" baseTableName="rent"
+                                 constraintName="FK_RENT_ON_END_PARKING" referencedColumnNames="id"
+                                 referencedTableName="parking"/>
+    </changeSet>
+    <changeSet id="1648384217338-7" author="YMS21 (generated)">
+        <addForeignKeyConstraint baseColumnNames="start_parking_id" baseTableName="rent"
+                                 constraintName="FK_RENT_ON_START_PARKING" referencedColumnNames="id"
+                                 referencedTableName="parking"/>
+    </changeSet>
+    <changeSet id="1648384217338-8" author="YMS21 (generated)">
+        <addForeignKeyConstraint baseColumnNames="transport_id" baseTableName="rent"
+                                 constraintName="FK_RENT_ON_TRANSPORT" referencedColumnNames="id"
+                                 referencedTableName="transport"/>
+    </changeSet>
+    <changeSet id="1648384217338-9" author="YMS21 (generated)">
+        <addForeignKeyConstraint baseColumnNames="parking_id" baseTableName="transport"
+                                 constraintName="FK_TRANSPORT_ON_PARKING" referencedColumnNames="id"
+                                 referencedTableName="parking"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,37 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Администратор as adm
+participant Frontend as f
+participant "Parking Controller" as pc
+participant "Parking Mapper" as pm
+participant "Parking Service" as ps
+participant Database as db
+
+adm -> f: Открытие веб-страницы
+f  -> pc: Идентификатор парковки и\nобъект передачи данных\nпарковки для обновления
+pc -> pm: Объект передачи данных\nпарковки для обновления
+pm --> pc: Парковка
+pc -> ps: Идентификатор парковки и\nпарковка
+ps -> db: Запрос на получение информации\nо парковке по идентификатору
+
+alt Успех
+    db --> ps: Информация\nо парковке
+    ps -> db: Сохранение обновленной парковки
+
+    alt Успех
+        ps --> pc: Обновленная парковка
+        pc -> pm: Обновленная парковка
+        pm --> pc: Объект передачи данных\nобновленной парковки
+        pc --> f: Объект передачи данных\nобновленной парковки
+        f --> adm: Отображение обновленной парковки
+    else Ошибка
+        pc --> adm: Парковка не обновлена
+    end
+else Ошибка
+    ps --> adm: Парковка не найдена
+end
+
+@enduml

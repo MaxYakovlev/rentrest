@@ -1,0 +1,37 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Администратор as adm
+participant Frontend as f
+participant "Transport Controller" as tc
+participant "Transport Mapper" as tm
+participant "Transport Service" as ts
+participant Database as db
+
+adm -> f: Открытие веб-страницы
+f  -> tc: Идентификатор электротранспорта и\nобъект передачи данных\nтранспорта для обновления
+tc -> tm: Объект передачи данных\nтранспорта для обновления
+tm --> tc: Транспорт
+tc -> ts: Идентификатор транспорта и\nтранспорт
+ts -> db: Запрос на получение информации\nо транспорте по идентификатору
+
+alt Успех
+    db --> ts: Информация\nо транспорте
+    ts -> db: Сохранение обновленного транспорта
+
+    alt Успех
+        ts --> tc: Обновленный транспорт
+        tc -> tm: Обновленный транспорт
+        tm --> tc: Объект передачи данных\nобновленного транспорта
+        tc --> f: Объект передачи данных\nобновленного транспорта
+        f --> adm: Отображение обновленного транспорта
+    else Ошибка
+        tc --> adm: Транспорт не обновлен
+    end
+else Ошибка
+    ts --> adm: Транспорт не найден
+end
+
+@enduml

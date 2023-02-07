@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Клиент as cl
+participant "Telegram Бот" as bot
+participant "Start command" as strt
+participant "User Service" as us
+database "База данных" as db
+
+cl -> bot: Команда "/start"
+bot -> strt: Информация о пользователе\n и чате
+strt -> us: Информация о пользователе
+us -> db: Добавление пользователя
+
+alt Успех
+    us --> strt: Зарегистрированный пользователь
+    strt --> cl: Информация о регистрации
+else Ошибка
+    us -> cl: Пользователь уже зарегистрирован
+end
+
+@enduml

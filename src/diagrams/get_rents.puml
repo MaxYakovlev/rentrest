@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Администратор as adm
+participant Frontend as f
+participant "Rent Controller" as rc
+participant "Rent Mapper" as rm
+participant "Rent Service" as rs
+participant Database as db
+
+adm -> f: Открытие веб-страницы
+f -> rc: Запрос на получение\nсписка аренд
+rc -> rs: Запрос на получение\nсписка аренд
+rs -> db: Запрос на получение\nсписка аренд
+db --> rs: Получение списка аренд
+rs --> rc: Список аренд
+rc -> rm: Список аренд
+rm --> rc: Объект передачи данных\nсписка аренд
+rc --> f: Объект передачи данных\nсписка аренд
+f --> adm: Отображение списка аренд
+
+@enduml

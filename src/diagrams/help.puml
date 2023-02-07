@@ -1,0 +1,25 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Пользователь as usr
+participant "Telegram Бот" as bot
+participant "Help Command" as hlp
+participant "User Service" as us
+database "База данных" as db
+
+usr -> bot: Команда "/info"
+bot -> hlp: Информация о пользователе\nи чате
+hlp -> us: Логин
+us -> db: Запрос информации\n о пользователе по логину
+
+alt Успех
+    db --> us: Информация о пользователе\nпо логину
+    us --> hlp: Информация о пользователе\nпо логину
+    hlp --> usr: Отображение информации о доступных командах
+else Ошибка
+    us -> usr: Зарегистрируйтесь
+end
+
+@enduml

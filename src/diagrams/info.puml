@@ -1,0 +1,30 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Пользователь as usr
+participant "Telegram Бот" as bot
+participant "Info Command" as inf
+participant "User Service" as us
+participant "Rent Service" as rs
+database "База данных" as db
+
+usr -> bot: Команда "/info"
+bot -> inf: Информация о пользователе\nи чате
+inf -> us: Логин
+us -> db: Запрос информации\n о пользователе по логину
+
+alt Успех
+    db --> us: Информация о пользователе
+    us --> inf: Информация о пользователе
+    inf -> rs: Информация о пользователе, статусы аренд
+    rs --> db: Запрос на получение\nоткрытых и закрытых\nаренд пользователя
+    db --> rs: Информация о пользователе,\n открытых и закрытых арендах
+    rs --> inf: Информация о пользователе,\n открытых и закрытых арендах
+    inf --> usr: Информация о пользователе,\n открытых и закрытых арендах
+else Ошибка
+    us --> usr: Зарегистрируйтесь
+end
+
+@enduml

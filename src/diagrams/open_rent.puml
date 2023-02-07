@@ -1,0 +1,62 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Клиент as cl
+participant "Telegram Бот" as bot
+participant "Rent Command" as rnt
+participant "User Service" as us
+participant "Transport Service" as ts
+participant "Rent Service" as rs
+participant ЮKassa as k
+database "База данных" as db
+
+cl -> bot: Команда "/rent"
+bot  -> rnt: Информация о пользователе,\n чате и команде
+
+alt Успех
+
+    rnt -> us: Логин
+    us -> db: Запрос информации о пользователе по логину
+    db --> us: Информация о пользователе по логину
+    us --> rnt: Информация\n о пользователе
+    rnt -> ts: Название транспорта
+    ts -> db: Запрос информации о транспорте по названию
+    db --> ts: Информация о транспорте по названию
+
+    alt Успех
+        ts --> rnt: Информация о транспорте
+        rnt -> rs: Информация о пользователе
+        rs -> db: Запрос на наличие\nоткрытой аренды пользователя
+
+        alt Успех
+            db --> rs: Информация о наличии открытой аренде
+            rs --> rnt: Информация о наличии открытой аренде
+            rnt --> cl: Счет
+            cl -> k: Данные карты, стоимость
+
+            alt Успех
+                k --> rnt: Статус оплаты
+                rnt -> rs: Информация о пользователе и транспорте
+                rs -> db: Добавление аренды
+                rs --> rnt: Открытая аренда
+                rnt --> cl: Информация об открытой аренде
+            else Ошибка
+                k --> cl: Не оплачено
+            end
+        else Ошибка
+            rnt --> cl: Уже есть открытые аренды
+        end
+    else Ошибка
+        rnt --> cl: Транспорт не найден или занят
+    end
+else Ошибка
+    us -> cl: Зарегистрируйтесь
+else Ошибка
+    us -> cl: Админ не может открыть аренду
+else Ошибка
+    us -> cl: Команда не существует
+end
+
+@enduml

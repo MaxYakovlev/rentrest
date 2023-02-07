@@ -1,0 +1,53 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Клиент as cl
+participant "Telegram Бот" as bot
+participant "Close Command" as cls
+participant "User Service" as us
+participant "Parking Service" as ps
+participant "Rent Service" as rs
+participant ЮKassa as k
+database "База данных" as db
+
+cl -> bot: Команда "/close"
+bot  -> cls: Информация о пользователе,\n чате и команде
+
+alt Успех
+    cls -> us: Логин
+    us -> db: Запрос информации о пользователе по логину
+    db -> us: Информация о пользователе по логину
+    us --> cls: Информация о пользователе
+
+    alt Успех
+       cls --> cl: Запрос геолокации
+       cl -> cls: Геолокация
+       cls -> ps: Геолокация
+       ps -> db: Запрос информации о зонах парковок
+       db --> ps: Информация о зонах парковок
+       ps --> cls: Зона парковки по геолокации
+
+       alt Успех
+            cls -> k: Данные карты, стоимость
+            cls -> rs: Информация о пользователе и парковке
+            rs -> db: Обновление информации об аренде
+
+            alt Успех
+                rs --> cls: Закрытая аренда
+                cls --> cl: Информация о закрытой аренде
+            else Ошибка
+                rs --> cl: Нет открытой аренды
+            end
+       else Ошибка
+            ps --> cl: Неподходящий тип парковки
+       end
+    else Ошибка
+       cls --> cl: Админ не может закрыть аренду
+    end
+else Ошибка
+    cls --> cl: Зарегистрируйтесь
+end
+
+@enduml

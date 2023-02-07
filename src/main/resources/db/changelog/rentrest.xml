@@ -1,0 +1,9 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <include relativeToChangelogFile="true" file="init.xml" />
+    <include relativeToChangelogFile="true" file="delete-column-amount-in-appuser.xml"/>
+    <include relativeToChangelogFile="true" file="add-chat-id-to-user.xml" />
+</databaseChangeLog>

@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Пользователь as usr
+participant Frontend as f
+participant "Parking Controller" as pc
+participant "Parking Mapper" as pm
+participant "Parking Service" as ps
+participant Database as db
+
+usr -> f: Открытие веб-страницы
+f -> pc: Запрос на получение\nсписка парковок
+pc -> ps: Запрос на получение\nсписка парковок
+ps -> db: Запрос на получение\nсписка парковок
+db --> ps: Получение списка парковок
+ps --> pc: Список парковок
+pc -> pm: Список парковок
+pm --> pc: Объект передачи данных\nсписка парковок
+pc --> f: Объект передачи данных\nсписка парковок
+f --> usr: Отображение списка парковок
+
+@enduml

@@ -1,0 +1,34 @@
+server:
+  port : 8081
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/rentrest_db}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:root}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  liquibase:
+    change-log: db/changelog/rentrest.xml
+security:
+  jwt:
+    secret: zne2hm23uoz2e30ep0zi39HSKHNKQLwe927e29eMz2m0823uz
+settings:
+  tariff:
+    electricBicycle:
+      base: 100.00
+      costPerMinute: 4.00
+    electricScooter:
+      base: 70.00
+      costPerMinute: 3.00
+telegram:
+  bot:
+    token: 5186021945:AAH-dUkuJsWXqLrkVzJNvb4o0TeTpYI-SbI
+    name: iRentBot
+  payment:
+    token: 381764678:TEST:35192

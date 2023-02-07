@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor Пользователь as usr
+participant "Telegram Бот" as bot
+participant "Map Command" as mp
+participant "User Service" as us
+participant "Security Service" as ss
+database "База данных" as db
+
+usr -> bot: Команда "/info"
+bot -> mp: Информация о пользователе\nи чате
+mp -> us: Логин
+us -> db: Запрос информации\n о пользователе по логину
+
+alt Успех
+    db --> us: Информация о пользователе
+    us --> mp: Информация о пользователе
+    mp -> ss: Информация о пользователе
+    ss --> mp: JWT
+    mp --> usr: Ссылка на карту с JWT
+else Ошибка
+    us --> usr: Зарегистрируйтесь
+end
+
+@enduml
